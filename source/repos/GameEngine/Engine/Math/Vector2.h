@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include "../Header Files/pch.h"
 namespace nc
 {
 	struct Vector2 {
@@ -33,10 +34,14 @@ namespace nc
 		Vector2& operator *= (float s) { x *= s; y *= s; return *this; }
 		Vector2& operator /= (float s) { x /= s; y /= s; return *this; }
 		
+		Vector2 operator - () { return Vector2{-x, -y}; }
+
+		friend std::istream& operator >> (std::istream& stream, Vector2& v);
+
 		float Length() const;
 		float LengthSqr() const;
 		Vector2 Normalized() const;
-		void static Normalize();
+		void Normalize();
 		float static Distance(const Vector2& v1, const Vector2& v2);
 		Vector2 static Rotate(const Vector2& v, float radians);
 
@@ -53,6 +58,26 @@ namespace nc
 
 	inline float Vector2::LengthSqr() const {
 		return (x * x) + (y * y);
+	}
+
+	inline Vector2 Vector2::Normalized() const{
+		float length = Length();
+		Vector2 n = (length == 0.0f) ? Vector2{ 0.0f, 0.0f } : *this / length;
+
+		return n;
+	}
+
+	inline void Vector2::Normalize(){
+		float length = Length();
+		if (length == 0.0f)
+		{
+			x = y = 0.0f;
+		}
+		else
+		{
+			*this /= length;
+		}
+
 	}
 
 	inline float Vector2::Distance(const Vector2& v1, const Vector2& v2) {

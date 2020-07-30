@@ -3,10 +3,13 @@
 
 namespace nc
 {
-	float random() {
+	inline float random() {
 		return rand() / static_cast<float>(RAND_MAX);
 	}
-	float random(float min, int max) {
+	inline float random(float min, float max) {
+		if (min > max) {
+			std::swap(min, max);
+		}
 		return min + (max-min) * random();
 	}
 }
